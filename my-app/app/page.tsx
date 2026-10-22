@@ -4,11 +4,11 @@ import { connection } from "next/server";
 import { createClient } from "../lib/supabase/server";
 import GoogleSignInButton from "./components/google-sign-in-button";
 import SignOutButton from "./components/google-sign-out-button";
-import { revalidatePath } from "next/cache";
 import DeleteExcuseButton from "./components/delete-excuse-button";
 import { redirect } from "next/navigation";
 import AdminListControls from "./components/admin-list-controls";
 import Link from "next/link";
+import EditExcuseForm from "./components/edit-excuse-form";
 
 type AdminSearchParams = Record<string, string | string[] | undefined>;
 
@@ -23,47 +23,6 @@ type ExcuseRow = {
   skill_issue_count: number;
   total_count: number;
 };
-
-async function updateExcuse(formData: FormData) {
-  "use server";
-
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) throw new Error("Sign in required.");
-
-  const { data: profile, error: profileError } = await supabase
-    .from("profiles")
-    .select("is_superadmin")
-    .eq("id", user.id)
-    .single();
-
-  if (profileError || profile?.is_superadmin !== true) {
-    throw new Error("Administrator access required.");
-  }
-
-  const id = String(formData.get("id") ?? "").trim();
-  const excuse = String(formData.get("excuse") ?? "").trim();
-
-  if (!id || !excuse || excuse.length > 5000) {
-    throw new Error("Enter an excuse between 1 and 5,000 characters.");
-  }
-
-  const { data, error } = await supabase
-    .from("excuses")
-    .update({ excuse })
-    .eq("id", id)
-    .select("id")
-    .single();
-
-  if (error || !data) {
-    throw new Error("Could not save the excuse.");
-  }
-
-  revalidatePath("/");
-}
 
 export default function Home({
   searchParams,
@@ -676,20 +635,10 @@ async function LoginStatus({
                         {item.situation || "—"}
                       </td>
                       <td>
-                        <form action={updateExcuse} className="excuse-form">
-                          <input type="hidden" name="id" value={item.id} />
-
-                          <textarea
-                            name="excuse"
-                            aria-label={`Edit excuse ${item.id}`}
-                            defaultValue={item.excuse}
-                            required
-                            maxLength={5000}
-                            rows={3}
-                          />
-
-                          <button type="submit">Save</button>
-                        </form>
+                        <EditExcuseForm
+                          id={item.id}
+                          initialExcuse={item.excuse}
+                        />
                       </td>
                       <td className="created-date">
                         {new Date(item.created_at).toISOString().slice(0, 10)}
