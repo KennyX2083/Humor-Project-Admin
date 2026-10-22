@@ -13,6 +13,7 @@ export default function DeleteExcuseButton({ id }: { id: string }) {
 
   return (
     <form
+      className="delete-excuse-form"
       action={action}
       onSubmit={(event) => {
         const confirmed = window.confirm(
@@ -24,7 +25,7 @@ export default function DeleteExcuseButton({ id }: { id: string }) {
     >
       <input type="hidden" name="id" value={id} />
 
-      <button type="submit" disabled={pending}>
+      <button className="button-danger" type="submit" disabled={pending}>
         {pending ? "Deleting…" : "Delete"}
       </button>
 

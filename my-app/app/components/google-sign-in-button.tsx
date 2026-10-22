@@ -30,7 +30,7 @@ export default function GoogleSignInButton() {
 
   return (
     <div>
-      <button type="button" onClick={signIn} disabled={loading}>
+      <button className="button-primary" type="button" onClick={signIn} disabled={loading}>
         {loading ? "Redirecting…" : "Sign in with Google"}
       </button>
 

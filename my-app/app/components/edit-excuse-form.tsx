@@ -40,19 +40,27 @@ export default function EditExcuseForm({
         rows={3}
       />
 
-      <button type="submit" disabled={pending}>
-        {pending ? "Saving…" : "Save"}
-      </button>
+      <div className="save-actions">
+        <button className="button-primary" type="submit" disabled={pending}>
+          {pending ? "Saving…" : "Save"}
+        </button>
 
-      <p role="status" aria-live="polite" aria-atomic="true">
-        {pending
-          ? "Saving your changes…"
-          : saved
-            ? "✓ Saved successfully."
-            : text !== initialExcuse
-              ? "Unsaved changes."
-              : ""}
-      </p>
+        <p
+          className="save-feedback"
+          data-saved={saved}
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+        >
+          {pending
+            ? "Saving your changes…"
+            : saved
+              ? "✓ Saved successfully."
+              : text !== initialExcuse
+                ? "Unsaved changes."
+                : ""}
+        </p>
+      </div>
 
       {!pending && state.error && (
         <p role="alert">{state.error}</p>

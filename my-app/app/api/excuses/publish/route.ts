@@ -1,3 +1,4 @@
+import { revalidatePath } from "next/cache";
 import { createClient } from "../../../../lib/supabase/server";
 
 export async function POST(request: Request) {
@@ -78,5 +79,7 @@ export async function POST(request: Request) {
     );
   }
 
+  revalidatePath("/");
+  revalidatePath("/excuses");
   return Response.json({ excuseId }, { status: 201 });
 }

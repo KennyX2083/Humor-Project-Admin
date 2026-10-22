@@ -243,7 +243,7 @@ export default function ExcuseGenerator() {
 
           <div className="preview-actions">
             <button
-              className="generate-button"
+              className="button-danger"
               type="button"
               disabled={pending}
               onClick={discardDraft}
@@ -252,7 +252,7 @@ export default function ExcuseGenerator() {
             </button>
 
             <button
-              className="generate-button"
+              className="button-secondary"
               type="button"
               disabled={pending}
               onClick={regenerateDraft}
@@ -261,7 +261,7 @@ export default function ExcuseGenerator() {
             </button>
 
             <button
-              className="generate-button"
+              className="button-primary"
               type="button"
               disabled={pending}
               onClick={publishDraft}
@@ -372,7 +372,7 @@ export default function ExcuseGenerator() {
 
           <div className="generator-bottom">
             <p>Preview excuse before publishing.</p>
-            <button className="generate-button" type="submit">
+            <button className="button-primary" type="submit">
               {pending ? "Building your defense…" : "Generate excuse"}
               <span aria-hidden="true">{pending ? "…" : "↗"}</span>
             </button>

@@ -50,5 +50,7 @@ export async function deleteExcuse(
   }
 
   revalidatePath("/");
+  revalidatePath("/excuses");
+  revalidatePath("/ratings");
   return {};
 }

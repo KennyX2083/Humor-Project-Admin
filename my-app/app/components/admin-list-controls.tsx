@@ -5,6 +5,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 type Props = {
   kind: "users" | "excuses" | "votes";
+  placement?: "filters" | "pagination";
   game?: string;
   sort?: string;
   scope?: string;
@@ -15,6 +16,7 @@ type Props = {
 
 export default function AdminListControls({
   kind,
+  placement = "filters",
   game = "all",
   sort = "newest",
   scope = "all",
@@ -105,16 +107,50 @@ const prefix =
     });
   }
 
+  if (placement === "pagination") {
+    return (
+      <div className="pagination-wrap" aria-busy={pending}>
+        <nav className="list-pagination" aria-label={kind + " pages"}>
+          <button
+            type="button"
+            disabled={pending || page <= 1}
+            onClick={() => change("page", String(page - 1))}
+          >
+            Previous
+          </button>
+
+          <span>Page {page} of {totalPages}</span>
+
+          <button
+            type="button"
+            disabled={pending || page >= totalPages}
+            onClick={() => change("page", String(page + 1))}
+          >
+            Next
+          </button>
+        </nav>
+
+        <p className="list-status" role="status" aria-live="polite">
+          {pending ? "Loading…" : ""}
+        </p>
+      </div>
+    );
+  }
+
   return (
-    <div>
+    <div
+      className="admin-list-controls"
+      data-placement="filters"
+      aria-busy={pending}
+    >
       <fieldset className="game-filter" disabled={pending}>
         <legend className="sr-only">{kind} controls</legend>
 
         {controls.map((control) => (
-          <label key={control.field} htmlFor={`${prefix}-${control.field}`}>
-            {control.label}{" "}
+          <label key={control.field} htmlFor={prefix + "-" + control.field}>
+            {control.label}
             <select
-              id={`${prefix}-${control.field}`}
+              id={prefix + "-" + control.field}
               value={control.value}
               onChange={(event) =>
                 change(control.field, event.target.value)
@@ -137,27 +173,7 @@ const prefix =
         </button>
       </fieldset>
 
-      <nav aria-label={`${kind} pages`}>
-        <button
-          type="button"
-          disabled={pending || page <= 1}
-          onClick={() => change("page", String(page - 1))}
-        >
-          Previous
-        </button>
-
-        <span> Page {page} of {totalPages} </span>
-
-        <button
-          type="button"
-          disabled={pending || page >= totalPages}
-          onClick={() => change("page", String(page + 1))}
-        >
-          Next
-        </button>
-      </nav>
-
-      <p role="status" aria-live="polite">
+      <p className="list-status" role="status" aria-live="polite">
         {pending ? "Loading…" : ""}
       </p>
     </div>

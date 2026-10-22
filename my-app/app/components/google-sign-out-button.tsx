@@ -28,8 +28,8 @@ export default function SignOutButton() {
   }
 
   return (
-    <div>
-      <button type="button" onClick={signOut} disabled={loading}>
+    <div className="account-action">
+      <button className="button-quiet" type="button" onClick={signOut} disabled={loading}>
         {loading ? "Signing out…" : "Sign out"}
       </button>
 

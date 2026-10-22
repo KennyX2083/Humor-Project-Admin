@@ -56,5 +56,7 @@ export async function updateExcuse(
   }
 
   revalidatePath("/");
+  revalidatePath("/excuses");
+  revalidatePath("/ratings");
   return { savedText: data.excuse };
 }
