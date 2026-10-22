@@ -8,6 +8,7 @@ import { revalidatePath } from "next/cache";
 import DeleteExcuseButton from "./components/delete-excuse-button";
 import { redirect } from "next/navigation";
 import AdminListControls from "./components/admin-list-controls";
+import Link from "next/link";
 
 type AdminSearchParams = Record<string, string | string[] | undefined>;
 
@@ -72,12 +73,12 @@ export default function Home({
   return (
     <main className="admin-shell">
       <header className="site-header">
-        <a className="brand" href="/">
+        <Link className="brand" href="/">
           <span className="brand-mark" aria-hidden="true">
             e.
           </span>
           Excuse Queue
-        </a>
+        </Link>
         <span className="section-code">Admin / Control room</span>
       </header>
       <section className="hero" aria-labelledby="admin-title">
