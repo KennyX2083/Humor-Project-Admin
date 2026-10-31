@@ -1,0 +1,51 @@
+.log-filters { display: flex; flex-wrap: wrap; align-items: end; gap: 16px; margin-block: 20px; }
+.log-filters label { display: grid; gap: 8px; color: var(--muted); font-size: 13px; }
+.log-filters input, .log-filters select { min-height: 44px; max-width: 100%; padding: 10px; border: 1px solid var(--line); background: var(--panel); color: var(--foreground); font: inherit; }
+.log-filters button { min-height: 44px; padding: 10px 16px; }
+.log-filters a { padding-block: 12px; }
+.log-timezone { color: var(--muted); font-size: 12px; }
+.log-table { min-width: 920px; }
+.log-table td { vertical-align: top; }
+.log-table time, .log-table code { font-size: 12px; }
+.log-table details { min-width: 220px; max-width: 520px; }
+.log-table summary { cursor: pointer; color: var(--accent); padding-block: 8px; }
+.log-table pre { white-space: pre-wrap; overflow-wrap: anywhere; font: inherit; max-height: 420px; overflow: auto; padding: 12px; background: var(--panel); }
+.log-table h3 { margin-bottom: 6px; font-size: 14px; }
+.log-status { display: inline-block; margin-top: 8px; color: var(--muted); }
+.log-status[data-status="succeeded"] { color: #7ce7ad; }
+.log-status[data-status="failed"] { color: #ff9caf; }
+.log-pagination { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 20px; margin-top: 24px; }
+.log-pagination a { padding: 12px; }
+.log-pagination > span { color: var(--muted); }
+@media (max-width: 680px) { .log-filters label { width: 100%; } }
+
+.admin-action-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 44px;
+  margin-block: 10px 4px;
+  padding: 10px 14px;
+  border: 1px solid var(--accent);
+  background: #00ffff12;
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.5;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  transition: background 150ms, color 150ms;
+}
+.admin-action-link:hover {
+  background: var(--accent);
+  color: var(--background);
+}
+.admin-action-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .admin-action-link { transition: none; }
+}

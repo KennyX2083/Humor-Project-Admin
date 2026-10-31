@@ -1,6 +1,6 @@
 import type { createClient } from "./supabase/server";
 
-export type AdminSection = "stats" | "users" | "excuses" | "ratings";
+export type AdminSection = "stats" | "users" | "excuses" | "ratings" | "requests" | "responses" | "providers" | "models" | "chains" | "steps";
 export type AdminSearchParams = Record<string, string | string[] | undefined>;
 export type AdminClient = Awaited<ReturnType<typeof createClient>>;
 export type AdminViewProps = {

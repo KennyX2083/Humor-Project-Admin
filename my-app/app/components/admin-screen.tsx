@@ -1,5 +1,4 @@
 import { cache, Suspense } from "react";
-import Link from "next/link";
 import { connection } from "next/server";
 import { createClient } from "../../lib/supabase/server";
 import type { AdminSection, AdminSearchParams } from "../../lib/admin-page-types";
@@ -11,7 +10,19 @@ import UsersView from "./admin-views/users-view";
 import ExcusesView from "./admin-views/excuses-view";
 import RatingsView from "./admin-views/ratings-view";
 
+import { RequestsView, ResponsesView } from "./admin-views/generation-logs-view";
+
+import { ProvidersView, ModelsView } from "./admin-views/model-config-view";
+
+import { ChainsView, ChainStepsView } from "./admin-views/prompt-chains-view";
+
 const pages = {
+  chains: { title: "Prompt Chains", description: "Inspect the prompt workflows used to generate excuses." },
+  steps: { title: "Prompt Chain Steps", description: "Read the ordered instructions in each prompt chain." },
+  providers: { title: "LLM Providers", description: "Manage the providers behind your AI models." },
+  models: { title: "LLM Models", description: "Configure model identifiers and enable models for generation." },
+  requests: { title: "Generation Requests", description: "Inspect generation inputs, models, and request status." },
+  responses: { title: "LLM Responses", description: "Review prompts, outputs, errors, timing, and token usage." },
   stats: { title: "Stats", description: "Explore activity, game comparisons, and the most accepted excuses." },
   users: { title: "Users", description: "Review the players and their profile details." },
   excuses: { title: "Excuses", description: "Generate, review, edit, and manage published excuses." },
@@ -59,14 +70,13 @@ export default function AdminScreen({ section, searchParams }: {
   searchParams: Promise<AdminSearchParams>;
 }) {
   return (
-    <main className="admin-shell">
+    <div className="admin-layout">
+      <a className="admin-skip-link" href="#admin-main">Skip to content</a>
+      <AdminNavigation active={section} />
+      <main className="admin-shell" id="admin-main" tabIndex={-1}>
       <header className="site-header">
-        <Link className="brand" href="/">
-          <span className="brand-mark" aria-hidden="true">e.</span>
-          Excuse Queue
-        </Link>
+        <span className="header-label">Administration</span>
         <div className="header-tools">
-          <AdminNavigation active={section} />
           <Suspense fallback={<span className="header-account" role="status">Checking account…</span>}>
             <AdminAccount />
           </Suspense>
@@ -83,7 +93,8 @@ export default function AdminScreen({ section, searchParams }: {
         </Suspense>
       </div>
       <footer className="site-footer">Excuse Queue / Administration</footer>
-    </main>
+      </main>
+    </div>
   );
 }
 
@@ -106,6 +117,6 @@ async function AdminContent({ section, searchParams }: {
   }
 
   const params = await searchParams;
-  const View = { stats: StatsView, users: UsersView, excuses: ExcusesView, ratings: RatingsView }[section];
+  const View = { stats: StatsView, users: UsersView, excuses: ExcusesView, ratings: RatingsView, requests: RequestsView, responses: ResponsesView, providers: ProvidersView, models: ModelsView, chains: ChainsView, steps: ChainStepsView }[section];
   return <View supabase={supabase} params={params} userId={user.id} />;
 }
