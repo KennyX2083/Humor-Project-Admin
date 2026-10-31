@@ -27,6 +27,10 @@ const groups: { title: string; links: { section: AdminSection; href: string; lab
     { section: "steps", href: "/prompt-chain-steps", label: "Chain steps" },
     { section: "mix", href: "/prompt-chain-mix", label: "Chain mix" },
   ] },
+  { title: "Signup access", links: [
+    { section: "domains", href: "/signup-domains", label: "Allowed domains" },
+    { section: "emails", href: "/whitelisted-emails", label: "Whitelisted emails" },
+  ] },
 ];
 
 export default function AdminNavigation({ active }: { active: AdminSection }) {

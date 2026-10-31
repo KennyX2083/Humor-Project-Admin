@@ -22,7 +22,11 @@ import TermsView from "./admin-views/terms-view";
 
 import GenerationExamplesView from "./admin-views/generation-examples-view";
 
+import { SignupDomainsView, WhitelistedEmailsView } from "./admin-views/access-lists-view";
+
 const pages = {
+  domains: { title: "Allowed Signup Domains", description: "Manage the domain list for signup eligibility." },
+  emails: { title: "Whitelisted Emails", description: "Manage individual email addresses on the signup list." },
   examples: { title: "AI Generation Examples", description: "Create and manage example gaming situations and excuses." },
   terms: { title: "Terms", description: "Create, review, and manage your gaming glossary." },
   mix: { title: "Prompt Chain Mix", description: "Adjust how frequently each prompt chain is used for generation." },
@@ -126,6 +130,6 @@ async function AdminContent({ section, searchParams }: {
   }
 
   const params = await searchParams;
-  const View = { stats: StatsView, users: UsersView, excuses: ExcusesView, ratings: RatingsView, requests: RequestsView, responses: ResponsesView, providers: ProvidersView, models: ModelsView, chains: ChainsView, steps: ChainStepsView, mix: ChainMixView, terms: TermsView, examples: GenerationExamplesView }[section];
+  const View = { stats: StatsView, users: UsersView, excuses: ExcusesView, ratings: RatingsView, requests: RequestsView, responses: ResponsesView, providers: ProvidersView, models: ModelsView, chains: ChainsView, steps: ChainStepsView, mix: ChainMixView, terms: TermsView, examples: GenerationExamplesView, domains: SignupDomainsView, emails: WhitelistedEmailsView }[section];
   return <View supabase={supabase} params={params} userId={user.id} />;
 }
