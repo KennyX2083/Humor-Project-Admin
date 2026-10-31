@@ -16,7 +16,16 @@ import { ProvidersView, ModelsView } from "./admin-views/model-config-view";
 
 import { ChainsView, ChainStepsView } from "./admin-views/prompt-chains-view";
 
+import ChainMixView from "./admin-views/chain-mix-view";
+
+import TermsView from "./admin-views/terms-view";
+
+import GenerationExamplesView from "./admin-views/generation-examples-view";
+
 const pages = {
+  examples: { title: "AI Generation Examples", description: "Create and manage example gaming situations and excuses." },
+  terms: { title: "Terms", description: "Create, review, and manage your gaming glossary." },
+  mix: { title: "Prompt Chain Mix", description: "Adjust how frequently each prompt chain is used for generation." },
   chains: { title: "Prompt Chains", description: "Inspect the prompt workflows used to generate excuses." },
   steps: { title: "Prompt Chain Steps", description: "Read the ordered instructions in each prompt chain." },
   providers: { title: "LLM Providers", description: "Manage the providers behind your AI models." },
@@ -117,6 +126,6 @@ async function AdminContent({ section, searchParams }: {
   }
 
   const params = await searchParams;
-  const View = { stats: StatsView, users: UsersView, excuses: ExcusesView, ratings: RatingsView, requests: RequestsView, responses: ResponsesView, providers: ProvidersView, models: ModelsView, chains: ChainsView, steps: ChainStepsView }[section];
+  const View = { stats: StatsView, users: UsersView, excuses: ExcusesView, ratings: RatingsView, requests: RequestsView, responses: ResponsesView, providers: ProvidersView, models: ModelsView, chains: ChainsView, steps: ChainStepsView, mix: ChainMixView, terms: TermsView, examples: GenerationExamplesView }[section];
   return <View supabase={supabase} params={params} userId={user.id} />;
 }

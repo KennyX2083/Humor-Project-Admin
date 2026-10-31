@@ -1,4 +1,5 @@
 import { runPromptChain, type PromptStep } from "../../../lib/run-prompt-chain";
+import { choosePromptChain, type ChainMixEntry } from "../../../lib/prompt-chain-mix";
 import { GoogleGenAI } from "@google/genai";
 import { createClient } from "../../../lib/supabase/server";
 import { gameCharacters } from "../../../lib/game-characters";
@@ -98,11 +99,15 @@ export async function POST(request: Request) {
     );
   }
 
-  const { data: chain, error: chainError } = await supabase
-    .from("prompt_chains").select("id,name")
-    .eq("slug", "excuse-generation").single();
-  if (chainError || !chain) {
-    return Response.json({ error: "The excuse prompt chain is not configured." }, { status: 503 });
+  const { data: mix, error: mixError, count: mixCount } = await supabase
+    .from("prompt_chain_mix").select("chain_id,weight,prompt_chains(id,name,slug)", { count: "exact" })
+    .gt("weight", 0).order("chain_id").limit(1000).returns<ChainMixEntry[]>();
+  if (mixError || (mixCount ?? 0) > 1000) {
+    return Response.json({ error: "Could not load the prompt chain mix." }, { status: 503 });
+  }
+  const chain = choosePromptChain(mix ?? []);
+  if (!chain) {
+    return Response.json({ error: "No active prompt chains. Set a positive weight in Chain mix." }, { status: 503 });
   }
   const { data: steps, error: stepsError } = await supabase
     .from("prompt_chain_steps").select("id,position,name,instructions")

@@ -13,6 +13,8 @@ const groups: { title: string; links: { section: AdminSection; href: string; lab
   { title: "Content", links: [
     { section: "excuses", href: "/excuses", label: "Excuses" },
     { section: "ratings", href: "/ratings", label: "Ratings" },
+    { section: "terms", href: "/terms", label: "Terms" },
+    { section: "examples", href: "/generation-examples", label: "Generation examples" },
   ] },
   { title: "Observability", links: [
     { section: "requests", href: "/generation-requests", label: "Generation requests" },
@@ -23,6 +25,7 @@ const groups: { title: string; links: { section: AdminSection; href: string; lab
     { section: "models", href: "/llm-models", label: "LLM models" },
     { section: "chains", href: "/prompt-chains", label: "Prompt chains" },
     { section: "steps", href: "/prompt-chain-steps", label: "Chain steps" },
+    { section: "mix", href: "/prompt-chain-mix", label: "Chain mix" },
   ] },
 ];
 

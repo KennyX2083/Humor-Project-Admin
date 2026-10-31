@@ -1,0 +1,8 @@
+.term-form textarea {
+  width: 100%; min-width: 0; padding: 10px; border: 1px solid var(--line);
+  background: var(--background); color: var(--foreground); font: inherit;
+  resize: vertical; min-height: 100px;
+}
+.term-definition, .term-example { white-space: pre-wrap; overflow-wrap: anywhere; }
+.term-card h4 { margin-bottom: 4px; color: var(--muted); font-size: 12px; }
+.term-example { margin-top: 0; color: var(--muted); }

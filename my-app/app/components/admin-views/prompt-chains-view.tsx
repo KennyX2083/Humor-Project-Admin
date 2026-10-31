@@ -39,7 +39,7 @@ async function PromptChainsView({ supabase, params, stepsView }: AdminViewProps 
   const pages = Math.max(1, Math.ceil((count ?? 0) / 20));
   return <section className="admin-section" aria-labelledby="chains-heading">
     <div className="collection-heading"><h2 id="chains-heading">{title}</h2><p>{count ?? 0} records · Read only</p></div>
-    <p>{stepsView ? "Steps run in position order. Each step receives the player details and the previous step's output." : "The generator currently uses the chain with slug excuse-generation. Open a chain to inspect its steps."}</p>
+    <p>{stepsView ? "Steps run in position order. Each step receives the player details and the previous step's output." : "The generator selects a chain using its saved mix weight. Open a chain to inspect its steps."}</p>
     {filters}
     {error ? <p role="alert">Could not load {title.toLowerCase()}. Try refreshing.</p> : !data?.length ? <p className="empty-state">No matching records.</p> : <>
       <div className="table-scroll" role="region" aria-labelledby="chains-heading" tabIndex={0}>
