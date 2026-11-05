@@ -65,13 +65,12 @@ export default function AdminNavigation({ active }: { active: AdminSection }) {
               {link.label}
             </Link>
           ))}
+          {group.title === "Configuration" && (
+            <a href="https://humor-prompt-chain-tool-three.vercel.app/" onClick={closeMenu}>
+              Open chain editor <span aria-hidden="true">↗</span>
+            </a>
+          )}
         </div>)}
-        <div className="sidebar-group">
-          <p className="sidebar-group-title">Tools</p>
-          <a href="https://humor-prompt-chain-tool-three.vercel.app/" onClick={closeMenu}>
-            Prompt Chain Tool <span aria-hidden="true">↗</span>
-          </a>
-        </div>
       </nav>
       <p className="sidebar-footer">Excuse Queue / Admin</p>
     </aside>
