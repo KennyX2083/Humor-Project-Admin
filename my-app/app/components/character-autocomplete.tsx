@@ -5,9 +5,11 @@ import { useEffect, useId, useRef, useState } from "react";
 export default function CharacterAutocomplete({
   options,
   placeholder,
+  name = "character",
 }: {
   options: string[];
   placeholder: string;
+  name?: string;
 }) {
   const listId = useId();
   const [value, setValue] = useState("");
@@ -39,7 +41,7 @@ export default function CharacterAutocomplete({
     <div className="character-autocomplete">
       <input
         id="character"
-        name="character"
+        name={name}
         role="combobox"
         autoComplete="off"
         aria-autocomplete="list"

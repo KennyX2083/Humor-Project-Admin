@@ -40,8 +40,8 @@ export async function updateExcuse(
     return { error: "Invalid excuse ID." };
   }
 
-  if (!excuse || excuse.length > 5000) {
-    return { error: "Enter an excuse between 1 and 5,000 characters." };
+  if (!excuse || excuse.length > 4000) {
+    return { error: "Enter an excuse between 1 and 4,000 characters." };
   }
 
   const { data, error } = await supabase

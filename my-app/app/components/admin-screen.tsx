@@ -37,8 +37,8 @@ const pages = {
   requests: { title: "Generation Requests", description: "Inspect generation inputs, models, and request status." },
   responses: { title: "LLM Responses", description: "Review prompts, outputs, errors, timing, and token usage." },
   stats: { title: "Stats", description: "Explore activity, game comparisons, and the most accepted excuses." },
-  users: { title: "Users", description: "Review the players and their profile details." },
-  excuses: { title: "Excuses", description: "Generate, review, edit, and manage published excuses." },
+  users: { title: "Users", description: "Review players and change user or administrator roles." },
+  excuses: { title: "Excuses", description: "Create, review ratings, edit, and delete published excuses." },
   ratings: { title: "Rating", description: "Review player verdicts and filter the voting activity." },
 };
 
