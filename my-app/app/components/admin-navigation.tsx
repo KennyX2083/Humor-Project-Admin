@@ -66,6 +66,12 @@ export default function AdminNavigation({ active }: { active: AdminSection }) {
             </Link>
           ))}
         </div>)}
+        <div className="sidebar-group">
+          <p className="sidebar-group-title">Tools</p>
+          <a href="https://humor-prompt-chain-tool-three.vercel.app/" onClick={closeMenu}>
+            Prompt Chain Tool <span aria-hidden="true">↗</span>
+          </a>
+        </div>
       </nav>
       <p className="sidebar-footer">Excuse Queue / Admin</p>
     </aside>
