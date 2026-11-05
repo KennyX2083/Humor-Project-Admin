@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import type { AdminSection } from "../../lib/admin-page-types";
 import "./admin-navigation.css";
 
@@ -33,9 +33,16 @@ const groups: { title: string; links: { section: AdminSection; href: string; lab
   ] },
 ];
 
+// Keep the sidebar position when a different page recreates this component.
+let sidebarScrollTop = 0;
+
 export default function AdminNavigation({ active }: { active: AdminSection }) {
   const [open, setOpen] = useState(false);
   const toggle = useRef<HTMLButtonElement>(null);
+  const navigation = useRef<HTMLElement>(null);
+  useLayoutEffect(() => {
+    if (navigation.current) navigation.current.scrollTop = sidebarScrollTop;
+  }, [active]);
   function closeMenu() { setOpen(false); }
 
   return (
@@ -46,7 +53,7 @@ export default function AdminNavigation({ active }: { active: AdminSection }) {
       }
     }}>
       <div className="sidebar-header">
-        <Link className="brand" href="/" onClick={closeMenu}>
+        <Link className="brand" href="/" scroll={false} onClick={closeMenu}>
           <span className="brand-mark" aria-hidden="true">e.</span>
           Excuse Queue
         </Link>
@@ -56,17 +63,19 @@ export default function AdminNavigation({ active }: { active: AdminSection }) {
           {open ? "Close menu" : "Menu"}
         </button>
       </div>
-      <nav id="admin-sidebar-navigation" className="admin-nav" aria-label="Admin navigation">
+      <nav ref={navigation} id="admin-sidebar-navigation" className="admin-nav" aria-label="Admin navigation"
+        onScroll={event => { sidebarScrollTop = event.currentTarget.scrollTop; }}>
         {groups.map(group => <div className="sidebar-group" key={group.title}>
           <p className="sidebar-group-title">{group.title}</p>
           {group.links.map(link => (
-            <Link key={link.section} href={link.href} onClick={closeMenu}
+            <Link key={link.section} href={link.href} scroll={false} onClick={closeMenu}
               aria-current={active === link.section ? "page" : undefined}>
               {link.label}
             </Link>
           ))}
           {group.title === "Configuration" && (
-            <a href="https://humor-prompt-chain-tool-three.vercel.app/" onClick={closeMenu}>
+            <a href="https://humor-prompt-chain-tool-three.vercel.app/" target="_blank" rel="noopener noreferrer"
+              aria-label="Open chain editor (opens in a new tab)" onClick={closeMenu}>
               Open chain editor <span aria-hidden="true">↗</span>
             </a>
           )}
