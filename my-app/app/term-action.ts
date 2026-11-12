@@ -19,7 +19,7 @@ export async function saveTerm(_previous: TermState, form: FormData): Promise<Te
   if (intent !== "save" && intent !== "delete") return { error: "Invalid action." };
 
   if (intent === "delete") {
-    if (!id || form.get("confirm_delete") !== "on") return { error: "Select the confirmation checkbox before deleting." };
+    if (!id || form.get("confirm_delete") !== "on") return { error: "Confirm deletion in the popup before deleting." };
     const { data, error } = await supabase.from("terms").delete().eq("id", id).select("id").single();
     if (error || !data) return { error: "Could not delete the term. Refresh and try again." };
   } else {

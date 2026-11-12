@@ -1,3 +1,4 @@
+import SortableTable from "../sortable-table";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import type { AdminViewProps } from "../../../lib/admin-page-types";
@@ -121,32 +122,40 @@ async function GenerationLogsView({ supabase, params, kind }: AdminViewProps & {
       ) : (
         <>
           <div className="table-scroll" role="region" aria-labelledby="logs-heading" tabIndex={0}>
-            <table className="log-table">
+            <SortableTable className="log-table">
               <thead><tr>
                 <th scope="col">ID / Created</th><th scope="col">Request / Status</th>
-                <th scope="col">Game / Model</th>
+                <th scope="col">Generating chain</th><th scope="col">Game / Model</th>
                 {responses ? <th scope="col">Usage</th> : <th scope="col">User</th>}
-                <th scope="col">Details</th>
+                <th scope="col">Input / Output</th><th scope="col">Details</th>
               </tr></thead>
               <tbody>{data.map((row) => {
                 const request = responses ? row.generation_request : row;
                 const id = responses ? row.request_id : row.id;
+                const chainId = row.chain_id ?? request?.chain_id;
                 return <tr key={row.id}>
-                  <td>#{row.id}<br /><time dateTime={row.created_at}>{date(row.created_at)}</time></td>
+                  <td data-sort-value={row.created_at}>#{row.id}<br /><time dateTime={row.created_at}>{date(row.created_at)}</time></td>
                   <td>
                     <Link href={`/generation-requests?request_id=${id}`}>Request #{id}</Link>
                     <br /><span className="log-status" data-status={request?.status}>{request?.status ?? "Unknown"}</span>
                   </td>
+                  <td data-sort-value={chainId ?? ""}>{chainId ? <Link href={`/prompt-chain-steps?chain_id=${chainId}`}>Chain #{chainId}</Link> : "Chain unavailable"}{responses && row.step_id ? <><br />Step #{row.step_id}</> : null}</td>
                   <td>{request?.game ?? "Unknown"}<br />{request?.llm_models?.name ?? "Unknown model"}
                     <br /><code>{request?.llm_models?.model_identifier}</code>
                   </td>
-                  {responses ? <td>
+                  {responses ? <td data-sort-value={row.duration_ms ?? -1}>
                     {row.duration_ms == null ? "—" : `${row.duration_ms} ms`}<br />
                     Input: {row.input_tokens ?? "—"}<br />Output: {row.output_tokens ?? "—"} tokens
                   </td> : <td className="user-id">{row.user_id}</td>}
+                  <td>
+                    <h3>Input</h3><p className="log-preview">{responses ? row.prompt : `Game: ${row.game}
+Character: ${row.character_name || "Not specified"}
+Situation: ${row.situation}`}</p>
+                    {responses ? <><h3>Output</h3><p className="log-preview">{row.output ?? "No output returned."}</p></> : <Link href={`/llm-responses?request_id=${row.id}`}>View step outputs</Link>}
+                  </td>
                   <td><details>
                     <summary>View details for #{row.id}</summary>
-                    {row.chain_id ? <p><Link href={`/prompt-chain-steps?chain_id=${row.chain_id}`}>View chain #{row.chain_id}</Link>{responses && row.step_id ? ` · Step ID ${row.step_id}` : ""}</p> : <p>Recorded before prompt chains were introduced.</p>}
+                    {row.chain_id ? <p><Link href={`/prompt-chain-steps?chain_id=${row.chain_id}`}>View chain #{row.chain_id}</Link>{responses && row.step_id ? ` · Step ID ${row.step_id}` : ""}</p> : <p>No generating chain is available for this record.</p>}
                     {responses ? <>
                       <h3>Prompt</h3><pre>{row.prompt}</pre>
                       <h3>Output</h3><pre>{row.output ?? "No output returned."}</pre>
@@ -160,7 +169,7 @@ async function GenerationLogsView({ supabase, params, kind }: AdminViewProps & {
                   </details></td>
                 </tr>;
               })}</tbody>
-            </table>
+            </SortableTable>
           </div>
           <nav className="log-pagination" aria-label={`${title} pages`}>
             {page > 1 ? <Link href={href(page - 1)}>Previous</Link> : <span>Previous</span>}

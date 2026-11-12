@@ -21,7 +21,7 @@ export async function saveAccessList(_previous: AccessListState, form: FormData)
   const intent = String(form.get("intent") ?? "save");
   if (intent !== "save" && intent !== "delete") return { error: "Invalid action." };
   if (intent === "delete") {
-    if (!id || form.get("confirm_delete") !== "on") return { error: "Select the confirmation checkbox before deleting." };
+    if (!id || form.get("confirm_delete") !== "on") return { error: "Confirm deletion in the popup before deleting." };
     const { data, error } = await supabase.from(config.table).delete().eq("id", id).select("id").single();
     if (error || !data) return { error: "Could not delete the entry. Refresh and try again." };
   } else {

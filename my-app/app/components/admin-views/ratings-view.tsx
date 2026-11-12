@@ -1,3 +1,4 @@
+import SortableTable from "../sortable-table";
 import type { AdminViewProps } from "../../../lib/admin-page-types";
 import { listParams } from "../../../lib/admin-list-params";
 import AdminListControls from "../admin-list-controls";
@@ -103,7 +104,7 @@ const excuseTexts = new Map<string, string>(
             aria-labelledby="votes-heading"
             tabIndex={0}
           >
-            <table className="ratings-table">
+            <SortableTable className="ratings-table">
               <thead>
                 <tr>
                   <th scope="col">Excuse</th>
@@ -138,7 +139,7 @@ const excuseTexts = new Map<string, string>(
                   </tr>
                 ))}
               </tbody>
-            </table>
+            </SortableTable>
           </div>
         )}
         <AdminListControls

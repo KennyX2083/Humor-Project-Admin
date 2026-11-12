@@ -26,7 +26,7 @@ export async function saveModelConfig(_previous: ConfigState, form: FormData): P
   if (intent !== "save" && intent !== "delete") return { error: "Invalid action." };
 
   if (intent === "delete") {
-    if (!id || form.get("confirm_delete") !== "on") return { error: "Select the confirmation checkbox before deleting." };
+    if (!id || form.get("confirm_delete") !== "on") return { error: "Confirm deletion in the popup before deleting." };
     const { data, error } = await supabase.from(table).delete().eq("id", id).select("id").single();
     if (error?.code === "23503") {
       return { error: kind === "provider"

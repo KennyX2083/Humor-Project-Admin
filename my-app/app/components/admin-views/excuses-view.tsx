@@ -1,3 +1,4 @@
+import SortableTable from "../sortable-table";
 import type { AdminViewProps, ExcuseRow } from "../../../lib/admin-page-types";
 import { listParams } from "../../../lib/admin-list-params";
 import AdminListControls from "../admin-list-controls";
@@ -60,12 +61,12 @@ const excusePages = Math.max(1, Math.ceil(excuseTotal / 12));
           <p className="empty-state">No excuses yet.</p>
         ) : (
           <div className="table-scroll" role="region" aria-labelledby="excuses-heading" tabIndex={0}>
-            <table className="excuse-ratings-table">
+            <SortableTable className="excuse-ratings-table">
               <thead>
                 <tr>
                   <th scope="col">Excuse</th>
                   <th scope="col">Game / Character</th>
-                  <th scope="col">Rating</th>
+                  <th scope="col">Valid rating %</th>
                   <th scope="col">Created</th>
                   <th scope="col">Actions</th>
                 </tr>
@@ -93,7 +94,7 @@ const excusePages = Math.max(1, Math.ceil(excuseTotal / 12));
                         {item.game === "league" ? "League of Legends" : item.game === "valorant" ? "Valorant" : item.game === "overwatch" ? "Overwatch" : item.game}
                         <br />{item.character_name || "Unassigned character"}
                       </td>
-                      <td className="excuse-rating-cell">
+                      <td className="excuse-rating-cell" data-sort-value={total ? valid / total : -1}>
                         <div className="excuse-rating-stack">
                           <span className="excuse-rating-pill" data-rating="valid"><span>Valid excuse</span><strong>{valid}</strong></span>
                           <span className="excuse-rating-pill" data-rating="skill"><span>Skill issue</span><strong>{skill}</strong></span>
@@ -119,7 +120,7 @@ const excusePages = Math.max(1, Math.ceil(excuseTotal / 12));
                   );
                 })}
               </tbody>
-            </table>
+            </SortableTable>
           </div>
         )}
         <AdminListControls

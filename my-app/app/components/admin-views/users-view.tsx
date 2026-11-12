@@ -1,3 +1,4 @@
+import SortableTable from "../sortable-table";
 import type { AdminViewProps } from "../../../lib/admin-page-types";
 import UserRoleForm from "../user-role-form";
 import "./week-seven.css";
@@ -90,7 +91,7 @@ const emailsById = new Map<string, string | null>(
             aria-labelledby="users-heading"
             tabIndex={0}
           >
-            <table className="users-table">
+            <SortableTable className="users-table">
               <thead>
                 <tr>
                   <th scope="col">Name</th>
@@ -109,7 +110,7 @@ const emailsById = new Map<string, string | null>(
                     </td>
                     <td className="user-email">{emailsError ? "Unavailable" : emailsById.get(person.id) || "No email"}</td>
                     <td className="user-id">{person.id}</td>
-                    <td>
+                    <td data-sort-value={person.is_superadmin ? "Administrator" : "User"}>
                       <UserRoleForm
                         key={`${person.id}:${person.is_superadmin}`}
                         person={person}
@@ -119,7 +120,7 @@ const emailsById = new Map<string, string | null>(
                   </tr>
                 ))}
               </tbody>
-            </table>
+            </SortableTable>
           </div>
         )}
         <AdminListControls

@@ -18,7 +18,7 @@ export async function saveGenerationExample(_previous: ExampleState, form: FormD
   if (intent !== "save" && intent !== "delete") return { error: "Invalid action." };
 
   if (intent === "delete") {
-    if (!id || form.get("confirm_delete") !== "on") return { error: "Select the confirmation checkbox before deleting." };
+    if (!id || form.get("confirm_delete") !== "on") return { error: "Confirm deletion in the popup before deleting." };
     const { data, error } = await supabase.from("ai_generation_examples").delete().eq("id", id).select("id").single();
     if (error || !data) return { error: "Could not delete the example. Refresh and try again." };
   } else {

@@ -1,3 +1,4 @@
+import SortableTable from "../sortable-table";
 import type { AdminViewProps, ExcuseRow } from "../../../lib/admin-page-types";
 export default async function StatsView({ supabase }: AdminViewProps) {
 
@@ -210,7 +211,7 @@ const topExcuses = rankedExcuses
           aria-labelledby="games-heading"
           tabIndex={0}
         >
-          <table className="game-comparison-table">
+          <SortableTable className="game-comparison-table">
             <thead>
               <tr>
                 <th scope="col">Game</th>
@@ -262,7 +263,7 @@ const topExcuses = rankedExcuses
                 </tr>
               ))}
             </tbody>
-          </table>
+          </SortableTable>
         </div>
         <p className="section-note">
           Acceptance is the percentage of votes marked “Valid excuse.”
@@ -288,7 +289,7 @@ const topExcuses = rankedExcuses
             aria-labelledby="top-excuses-heading"
             tabIndex={0}
           >
-            <table className="leaderboard-table">
+            <SortableTable className="leaderboard-table">
               <thead>
                 <tr>
                   <th scope="col">Rank</th>
@@ -319,7 +320,7 @@ const topExcuses = rankedExcuses
                   </tr>
                 ))}
               </tbody>
-            </table>
+            </SortableTable>
           </div>
         )}
       </section>

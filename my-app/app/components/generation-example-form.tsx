@@ -1,5 +1,6 @@
 "use client";
 
+import ConfirmDeleteButton from "./confirm-delete-button";
 import { useActionState, useId, useState } from "react";
 import { saveGenerationExample, type ExampleState } from "../generation-example-action";
 import { exampleGames, type GenerationExample } from "../../lib/generation-example";
@@ -11,11 +12,9 @@ export default function GenerationExampleForm({ record }: { record?: GenerationE
   const [character, setCharacter] = useState(record?.character_name ?? "");
   const [situation, setSituation] = useState(record?.situation ?? "");
   const [excuse, setExcuse] = useState(record?.example_excuse ?? "");
-  const [confirmDelete, setConfirmDelete] = useState(false);
   const [state, action, pending] = useActionState(async (previous: ExampleState, form: FormData) => {
     const result = await saveGenerationExample(previous, form);
     if (result.message && !record) { setTitle(""); setCharacter(""); setSituation(""); setExcuse(""); }
-    setConfirmDelete(false);
     return result;
   }, {});
   return <form action={action} className="config-form term-form">
@@ -33,8 +32,7 @@ export default function GenerationExampleForm({ record }: { record?: GenerationE
       <label htmlFor={`${prefix}-excuse`}>Example excuse<textarea id={`${prefix}-excuse`} name="example_excuse" value={excuse} onChange={e => setExcuse(e.target.value)} required maxLength={4000} rows={4} /></label>
       <button type="submit" name="intent" value="save">{pending ? "Working..." : record ? "Save changes" : "Create example"}</button>
       {record ? <div className="config-delete">
-        <label className="config-checkbox" htmlFor={`${prefix}-delete`}><input id={`${prefix}-delete`} type="checkbox" name="confirm_delete" checked={confirmDelete} onChange={e => setConfirmDelete(e.target.checked)} /> Confirm deletion of {record.title}</label>
-        <button type="submit" name="intent" value="delete" formNoValidate disabled={!confirmDelete}>Delete example</button>
+        <ConfirmDeleteButton message={`Permanently delete "${record.title}"? This cannot be undone.`}>Delete example</ConfirmDeleteButton>
       </div> : null}
     </fieldset>
     {state.error ? <p role="alert">{state.error}</p> : null}

@@ -1,5 +1,6 @@
 "use client";
 
+import ConfirmDeleteButton from "./confirm-delete-button";
 import { useActionState, useId, useState } from "react";
 import { saveModelConfig, type ConfigState } from "../model-config-action";
 
@@ -22,7 +23,6 @@ export default function ModelConfigForm({ kind, record, providers = [] }: {
   const [provider, setProvider] = useState(String(record?.provider_id ?? providers[0]?.id ?? ""));
   const [identifier, setIdentifier] = useState(record?.model_identifier ?? "");
   const [enabled, setEnabled] = useState(record?.is_enabled ?? true);
-  const [confirmDelete, setConfirmDelete] = useState(false);
   const [state, action, pending] = useActionState(async (previous: ConfigState, form: FormData) => {
     const result = await saveModelConfig(previous, form);
     if (result.message && !record) {
@@ -30,7 +30,6 @@ export default function ModelConfigForm({ kind, record, providers = [] }: {
       setIdentifier("");
       setEnabled(true);
     }
-    setConfirmDelete(false);
     return result;
   }, {});
 
@@ -60,10 +59,7 @@ export default function ModelConfigForm({ kind, record, providers = [] }: {
         {pending ? "Working..." : record ? "Save changes" : `Create ${kind}`}
       </button>
       {record ? <div className="config-delete">
-        <label className="config-checkbox" htmlFor={`${prefix}-delete`}>
-          <input id={`${prefix}-delete`} type="checkbox" name="confirm_delete" checked={confirmDelete} onChange={e => setConfirmDelete(e.target.checked)} /> Confirm deletion of {record.name}
-        </label>
-        <button type="submit" name="intent" value="delete" formNoValidate disabled={!confirmDelete}>Delete {kind}</button>
+        <ConfirmDeleteButton message={`Permanently delete "${record.name}"? This cannot be undone.`}>Delete {kind}</ConfirmDeleteButton>
       </div> : null}
     </fieldset>
     {state.error ? <p role="alert">{state.error}</p> : null}

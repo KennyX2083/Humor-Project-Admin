@@ -1,5 +1,6 @@
 "use client";
 
+import ConfirmDeleteButton from "./confirm-delete-button";
 import { useActionState, useId, useState } from "react";
 import { saveAccessList, type AccessListState } from "../access-list-action";
 import { accessLists, type AccessListKind, type AccessListRecord } from "../../lib/signup-access-list";
@@ -9,12 +10,10 @@ export default function AccessListForm({ kind, record }: { kind: AccessListKind;
   const prefix = useId();
   const [value, setValue] = useState(record?.value ?? "");
   const [notes, setNotes] = useState(record?.notes ?? "");
-  const [confirmDelete, setConfirmDelete] = useState(false);
   const [state, action, pending] = useActionState(async (previous: AccessListState, form: FormData) => {
     const result = await saveAccessList(previous, form);
     if (result.message && !record) { setValue(""); setNotes(""); }
     if (result.message && record) setValue(value.trim().toLowerCase());
-    setConfirmDelete(false);
     return result;
   }, {});
   return <form action={action} className="config-form term-form">
@@ -28,8 +27,7 @@ export default function AccessListForm({ kind, record }: { kind: AccessListKind;
       <label htmlFor={`${prefix}-notes`}>Notes (optional)<textarea id={`${prefix}-notes`} name="notes" value={notes} onChange={e => setNotes(e.target.value)} maxLength={500} rows={3} /></label>
       <button type="submit" name="intent" value="save">{pending ? "Working..." : record ? "Save changes" : `Add ${config.label}`}</button>
       {record ? <div className="config-delete">
-        <label className="config-checkbox" htmlFor={`${prefix}-delete`}><input id={`${prefix}-delete`} type="checkbox" name="confirm_delete" checked={confirmDelete} onChange={e => setConfirmDelete(e.target.checked)} /> Confirm deletion of {record.value}</label>
-        <button type="submit" name="intent" value="delete" formNoValidate disabled={!confirmDelete}>Delete entry</button>
+        <ConfirmDeleteButton message={`Permanently delete "${record.value}"? This cannot be undone.`}>Delete entry</ConfirmDeleteButton>
       </div> : null}
     </fieldset>
     {state.error ? <p role="alert">{state.error}</p> : null}

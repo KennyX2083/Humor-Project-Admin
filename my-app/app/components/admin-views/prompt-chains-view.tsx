@@ -1,3 +1,4 @@
+import SortableTable from "../sortable-table";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import type { AdminViewProps } from "../../../lib/admin-page-types";
@@ -43,14 +44,14 @@ async function PromptChainsView({ supabase, params, stepsView }: AdminViewProps 
     {filters}
     {error ? <p role="alert">Could not load {title.toLowerCase()}. Try refreshing.</p> : !data?.length ? <p className="empty-state">No matching records.</p> : <>
       <div className="table-scroll" role="region" aria-labelledby="chains-heading" tabIndex={0}>
-        <table className="log-table"><thead><tr>
+        <SortableTable className="log-table"><thead><tr>
           <th scope="col">ID / Name</th><th scope="col">{stepsView ? "Chain / Position" : "Slug"}</th>
           <th scope="col">{stepsView ? "Instructions" : "Description / Steps"}</th>
         </tr></thead><tbody>{data.map(row => <tr key={row.id}>
           <td>#{row.id}<br />{row.name}{!stepsView ? <><br /><Link className="admin-action-link" href={`/prompt-chain-steps?chain_id=${row.id}`}>View ordered steps <span aria-hidden="true">?</span></Link></> : null}</td>
           <td>{stepsView ? <><Link href={`/prompt-chains?q=${encodeURIComponent(row.prompt_chains?.name ?? "")}`}>{row.prompt_chains?.name ?? `Chain #${row.chain_id}`}</Link><br />Step {row.position}</> : <code>{row.slug}</code>}</td>
-          <td>{stepsView ? <details><summary>Read step instructions</summary><pre>{row.instructions}</pre></details> : <>{row.description}</>}</td>
-        </tr>)}</tbody></table>
+          <td data-sort-value={stepsView ? row.instructions : row.description}>{stepsView ? <details><summary>Read step instructions</summary><pre>{row.instructions}</pre></details> : <>{row.description}</>}</td>
+        </tr>)}</tbody></SortableTable>
       </div>
       <nav className="log-pagination" aria-label={`${title} pages`}>
         {page > 1 ? <Link href={href(page - 1)}>Previous</Link> : <span>Previous</span>}

@@ -1394,3 +1394,13 @@ button:disabled {
     transition: none !important;
   }
 }
+/* Comfortable long-form editing and inline table sorting. */
+textarea { min-height: 10rem; width: 100%; resize: vertical; line-height: 1.6; }
+textarea[name="excuse"], textarea[name="example_excuse"], textarea[name="definition"] { min-height: 14rem; }
+.table-sort-hint { caption-side: bottom; padding: 12px 0; text-align: left; font-size: 12px; color: var(--muted); }
+.table-sort-heading { display: inline-flex; align-items: center; gap: 8px; }
+.table-sort-arrows { display: inline-flex; gap: 2px; }
+.table-sort-arrows button { display: inline-flex; align-items: center; justify-content: center; min-width: 28px; min-height: 32px; padding: 2px 6px; border: 1px solid var(--line); background: transparent; color: inherit; font: inherit; cursor: pointer; }
+.table-sort-arrows button[aria-pressed="true"] { background: var(--foreground); color: var(--background); }
+.table-sort-arrows button:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+.log-preview { white-space: pre-wrap; overflow-wrap: anywhere; max-width: 38rem; max-height: 14rem; overflow: auto; }
